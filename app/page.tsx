@@ -4,12 +4,14 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { tools as initialTools, Tool } from './_data/tools';
 import { categories, CategoryId, getCategoryById } from './_data/categories';
 import Navbar from './_components/Navbar';
-import SearchBar from './_components/SearchBar';
+import HeroSection from './_components/HeroSection';
 import CategorySidebar from './_components/CategorySidebar';
 import ToolGrid from './_components/ToolGrid';
 import StatsBar from './_components/StatsBar';
 import AddToolModal from './_components/AddToolModal';
 import DailyRecommendation from './_components/DailyRecommendation';
+import StackFinder from './_components/StackFinder';
+import CommandPalette from './_components/CommandPalette';
 import ToolLogo from './_components/ToolLogo';
 
 export default function Home() {
@@ -21,10 +23,13 @@ export default function Home() {
   const [starredIds, setStarredIds] = useState<Set<string>>(new Set());
   const [isLoaded, setIsLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [activePresetId, setActivePresetId] = useState<string | null>(null);
 
   const featuredScrollRef = useRef<HTMLDivElement>(null);
   const directoryRef = useRef<HTMLDivElement>(null);
 
+  // Hydrate local storage
   useEffect(() => {
     const t = setTimeout(() => {
       try {
@@ -36,6 +41,18 @@ export default function Home() {
       setIsLoaded(true);
     }, 0);
     return () => clearTimeout(t);
+  }, []);
+
+  // Global ⌘K Command Palette Hotkey Listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const handleToggleStar = (id: string) => {
@@ -56,7 +73,7 @@ export default function Home() {
     } catch { /* ignore */ }
   };
 
-  // Compute recommendation based on day of year
+  // Spotlight tool pick
   const dailyTool = useMemo(() => {
     if (!toolsList.length) return initialTools[0];
     return toolsList[0];
@@ -93,7 +110,26 @@ export default function Home() {
   );
 
   const reset = () => {
-    setSearchQuery(''); setActiveCategory(null); setActiveTag(null); setShowStarredOnly(false);
+    setSearchQuery('');
+    setActiveCategory(null);
+    setActiveTag(null);
+    setShowStarredOnly(false);
+    setActivePresetId(null);
+  };
+
+  const handleSelectPreset = (preset: { id: string; categoryFilter?: string; tagFilter?: string }) => {
+    if (activePresetId === preset.id) {
+      reset();
+      return;
+    }
+    setActivePresetId(preset.id);
+    setShowStarredOnly(false);
+    setSearchQuery('');
+    if (preset.categoryFilter) setActiveCategory(preset.categoryFilter as CategoryId);
+    else setActiveCategory(null);
+    if (preset.tagFilter) setActiveTag(preset.tagFilter);
+    else setActiveTag(null);
+    scrollToDirectory();
   };
 
   const scrollFeatured = (dir: 'left' | 'right') => {
@@ -107,61 +143,31 @@ export default function Home() {
   const selectedCategoryObj = activeCategory ? getCategoryById(activeCategory) : null;
 
   return (
-    <div className="min-h-screen bg-[#fafafa] font-sans text-zinc-900">
-      {/* Navbar */}
+    <div className="min-h-screen bg-[#fcfcfd] font-sans text-slate-900">
+      {/* Sticky Glass Navbar */}
       <Navbar
         starredCount={starredIds.size}
         onOpenAddTool={() => setIsModalOpen(true)}
         onShowSaved={() => { setShowStarredOnly(true); setActiveCategory(null); scrollToDirectory(); }}
         onReset={reset}
+        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
       />
 
       {/* HERO SECTION */}
-      <section className="relative px-4 sm:px-8 lg:px-14 pt-8 pb-16 hero-grid overflow-hidden border-b border-zinc-200/60">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          
-          <div className="inline-flex items-center gap-2 rounded-full bg-orange-500/10 border border-orange-500/20 px-3.5 py-1.5 text-xs font-bold text-orange-600 mb-6 shadow-2xs">
-            <span>✨</span>
-            <span>Hand-curated directory of 100+ developer utilities</span>
-          </div>
+      <div className="hero-grid border-b border-slate-200/60">
+        <HeroSection
+          searchQuery={searchQuery}
+          onSearchChange={(q) => { setSearchQuery(q); if (q) scrollToDirectory(); }}
+          totalToolsCount={toolsList.length}
+          categoriesCount={categories.length}
+          onExploreClick={scrollToDirectory}
+        />
+      </div>
 
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-900 mb-6 leading-[1.15]">
-            Discover tools that elevate your{' '}
-            <span className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 bg-clip-text text-transparent">
-              workflow.
-            </span>
-          </h1>
-
-          <p className="text-base sm:text-lg text-zinc-600 font-normal max-w-2xl mx-auto mb-10 leading-relaxed">
-            Stop searching across a dozen bookmarks. Browse top-rated UI libraries, AI models, APIs, and dev tools with real previews and instant links.
-          </p>
-
-          {/* Centered Search Bar */}
-          <div className="max-w-2xl mx-auto mb-8 shadow-xl shadow-orange-500/5 rounded-2xl">
-            <SearchBar query={searchQuery} onChange={setSearchQuery} totalCount={toolsList.length} />
-          </div>
-
-          {/* Quick Category Chips */}
-          <div className="flex flex-wrap items-center justify-center gap-2 max-w-3xl mx-auto">
-            <span className="text-xs font-bold text-zinc-400 mr-1">Popular:</span>
-            {categories.slice(0, 5).map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => { setActiveCategory(cat.id); scrollToDirectory(); }}
-                className="flex items-center gap-1.5 rounded-full bg-white border border-zinc-200/80 px-3 py-1 text-xs font-medium text-zinc-700 hover:border-orange-300 hover:text-orange-600 hover:shadow-xs transition-all"
-              >
-                <span>{cat.emoji}</span>
-                <span>{cat.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MAIN CONTAINER */}
+      {/* MAIN CONTENT AREA */}
       <div className="px-4 sm:px-8 lg:px-14 py-12 space-y-16">
 
-        {/* TODAY'S RECOMMENDATION */}
+        {/* SPOTLIGHT RECOMMENDATION */}
         {dailyTool && (
           <section className="max-w-7xl mx-auto">
             <DailyRecommendation
@@ -172,24 +178,34 @@ export default function Home() {
           </section>
         )}
 
+        {/* STACK EXPLORER */}
+        <section className="max-w-7xl mx-auto">
+          <StackFinder
+            onSelectPreset={handleSelectPreset}
+            activePresetId={activePresetId}
+          />
+        </section>
+
         {/* FEATURED CAROUSEL */}
         {featuredTools.length > 0 && (
           <section className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-xl font-bold text-zinc-900 tracking-tight">Top Community Picks</h2>
-                <p className="text-xs text-zinc-500 font-medium">Trending software & utilities this week</p>
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Featured Resources</h2>
+                <p className="text-xs text-slate-500 font-medium">Top-rated utilities and libraries</p>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => scrollFeatured('left')}
-                  className="w-9 h-9 flex items-center justify-center rounded-full border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-600 text-sm transition-all shadow-xs"
+                  aria-label="Scroll left"
+                  className="w-9 h-9 flex items-center justify-center rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-sm transition-all shadow-2xs"
                 >
                   ←
                 </button>
                 <button
                   onClick={() => scrollFeatured('right')}
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-orange-500 hover:bg-orange-600 text-white text-sm transition-all shadow-md shadow-orange-500/20"
+                  aria-label="Scroll right"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-[#6366f1] hover:bg-[#4f46e5] text-white text-sm transition-all shadow-md shadow-[#9fa1ff]/20"
                 >
                   →
                 </button>
@@ -205,11 +221,11 @@ export default function Home() {
                 return (
                   <div
                     key={tool.id}
-                    className="flex-shrink-0 w-72 bg-white rounded-2xl border border-zinc-200/80 p-4 hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/5 hover:-translate-y-1 transition-all group flex flex-col justify-between"
+                    className="flex-shrink-0 w-72 bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-[#9fa1ff] hover:shadow-xl hover:shadow-[#9fa1ff]/10 hover:-translate-y-1 transition-all group flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-3 mb-3">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-50 border border-zinc-100 p-2 shadow-xs group-hover:scale-105 transition-transform">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-50 border border-slate-200/60 p-2 shadow-2xs group-hover:scale-105 transition-transform">
                           <ToolLogo
                             url={tool.url}
                             name={tool.name}
@@ -219,30 +235,33 @@ export default function Home() {
                             className="rounded-md"
                           />
                         </div>
-                        <span className="rounded-full bg-orange-50 text-orange-600 border border-orange-200/60 text-[10px] font-bold px-2.5 py-0.5">
-                          {cat.emoji} {cat.label}
+                        <span className="rounded-full bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30 text-[10px] font-bold px-2.5 py-0.5">
+                          {cat.label}
                         </span>
                       </div>
 
-                      <h3 className="text-sm font-bold text-zinc-900 group-hover:text-orange-600 transition-colors mb-1">
+                      <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#6366f1] transition-colors mb-1">
                         {tool.name}
                       </h3>
-                      <p className="text-xs text-zinc-500 font-medium line-clamp-2 mb-3">
+                      <p className="text-xs text-slate-500 font-medium line-clamp-2 mb-3">
                         {tool.description}
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-3 border-t border-zinc-100 mt-2">
-                      <span className="text-[11px] font-mono text-zinc-400 truncate max-w-[120px]">
+                    <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-2">
+                      <span className="text-[11px] font-mono text-slate-400 truncate max-w-[120px]">
                         {tool.url.replace(/^https?:\/\//, '').split('/')[0]}
                       </span>
                       <a
                         href={tool.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-bold text-orange-600 hover:text-orange-700 flex items-center gap-1"
+                        className="text-xs font-bold text-[#6366f1] hover:text-[#4f46e5] flex items-center gap-1"
                       >
-                        Visit ↗
+                        <span>Visit</span>
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
                       </a>
                     </div>
                   </div>
@@ -257,14 +276,14 @@ export default function Home() {
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             <CategorySidebar
               activeCategory={activeCategory}
-              onSelectCategory={(cat) => { setActiveCategory(cat); if (cat) setShowStarredOnly(false); }}
+              onSelectCategory={(cat) => { setActiveCategory(cat); if (cat) setShowStarredOnly(false); setActivePresetId(null); }}
               categoryCounts={categoryCounts}
               totalTools={toolsList.length}
               starredCount={starredIds.size}
               showStarredOnly={showStarredOnly}
-              onToggleStarredOnly={() => { setShowStarredOnly((p) => !p); if (!showStarredOnly) setActiveCategory(null); }}
+              onToggleStarredOnly={() => { setShowStarredOnly((p) => !p); if (!showStarredOnly) setActiveCategory(null); setActivePresetId(null); }}
               activeTag={activeTag}
-              onSelectTag={(tag) => setActiveTag(tag)}
+              onSelectTag={(tag) => { setActiveTag(tag); setActivePresetId(null); }}
             />
 
             <main className="flex-1 min-w-0 w-full">
@@ -283,11 +302,11 @@ export default function Home() {
                   starredIds={starredIds}
                   onToggleStar={handleToggleStar}
                   activeTag={activeTag}
-                  onSelectTag={(tag) => setActiveTag((p) => (p === tag ? null : tag))}
+                  onSelectTag={(tag) => { setActiveTag((p) => (p === tag ? null : tag)); setActivePresetId(null); }}
                   onResetFilters={reset}
                 />
               ) : (
-                <div className="py-24 text-center text-zinc-400 text-sm font-semibold">Loading directory…</div>
+                <div className="py-24 text-center text-slate-400 text-sm font-semibold">Loading directory…</div>
               )}
             </main>
           </div>
@@ -295,22 +314,30 @@ export default function Home() {
       </div>
 
       {/* FOOTER */}
-      <footer className="border-t border-zinc-200/80 px-4 sm:px-8 lg:px-14 py-8 bg-white">
+      <footer className="border-t border-slate-200/80 px-4 sm:px-8 lg:px-14 py-8 bg-white">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-lg font-black tracking-tight text-orange-500">dev</span>
-            <span className="text-lg font-black tracking-tight text-zinc-900">directory</span>
-            <span className="text-xs text-zinc-400 font-medium ml-2 border-l border-zinc-200 pl-3">
+            <span className="text-lg font-black tracking-tight text-[#6366f1]">dev</span>
+            <span className="text-lg font-black tracking-tight text-slate-900">directory</span>
+            <span className="text-xs text-slate-400 font-medium ml-2 border-l border-slate-200 pl-3">
               Curated software resources for modern developers
             </span>
           </div>
-          <span className="text-xs font-mono text-zinc-400">
-            {toolsList.length} tools · {categories.length} categories
+          <span className="text-xs font-mono text-slate-400">
+            {toolsList.length} resources · {categories.length} categories
           </span>
         </div>
       </footer>
 
+      {/* MODALS */}
       <AddToolModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAddTool={handleAddTool} />
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        tools={toolsList}
+        starredIds={starredIds}
+        onToggleStar={handleToggleStar}
+      />
     </div>
   );
 }

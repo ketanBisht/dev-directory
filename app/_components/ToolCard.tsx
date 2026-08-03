@@ -27,9 +27,9 @@ export default function ToolCard({
   /* ── LIST ROW ── */
   if (viewMode === 'list') {
     return (
-      <div className="group flex items-center gap-4 bg-white rounded-2xl border border-zinc-200/80 p-4 hover:border-orange-300 hover:shadow-lg hover:shadow-orange-500/5 hover:-translate-y-0.5 transition-all">
-        {/* Real Logo Container */}
-        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-zinc-50 border border-zinc-100 p-2 shadow-sm group-hover:scale-105 transition-transform">
+      <div className="group flex items-center gap-4 bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-[#9fa1ff] hover:shadow-lg hover:shadow-[#9fa1ff]/10 hover:-translate-y-0.5 transition-all">
+        {/* Logo Container */}
+        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-slate-50 border border-slate-200/60 p-2 shadow-2xs group-hover:scale-105 transition-transform">
           <ToolLogo
             url={tool.url}
             name={tool.name}
@@ -43,28 +43,25 @@ export default function ToolCard({
         {/* Info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
-            <span className="text-sm font-bold text-zinc-900 group-hover:text-orange-600 transition-colors truncate">
+            <span className="text-sm font-bold text-slate-900 group-hover:text-[#6366f1] transition-colors truncate">
               {tool.name}
             </span>
             {tool.isNew && (
-              <span className="rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 text-[9px] font-bold px-2 py-0.5 flex-shrink-0">
+              <span className="rounded-full bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30 text-[9px] font-bold px-2 py-0.5 flex-shrink-0">
                 NEW
               </span>
             )}
             {tool.isFeatured && (
-              <span className="rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[9px] font-bold px-2 py-0.5 flex-shrink-0">
-                POPULAR
+              <span className="rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[9px] font-bold px-2 py-0.5 flex-shrink-0">
+                FEATURED
               </span>
             )}
           </div>
-          <p className="text-xs text-zinc-500 font-medium truncate mb-1">{tool.description}</p>
+          <p className="text-xs text-slate-500 font-medium truncate mb-1">{tool.description}</p>
           <div className="flex items-center gap-3 text-[11px]">
-            <span className="text-zinc-500 font-semibold flex items-center gap-1">
-              <span>{cat.emoji}</span>
-              <span>{cat.label}</span>
-            </span>
-            <span className="text-zinc-300">·</span>
-            <span className="font-mono text-zinc-400 truncate">
+            <span className="text-slate-500 font-semibold">{cat.label}</span>
+            <span className="text-slate-300">·</span>
+            <span className="font-mono text-slate-400 truncate">
               {tool.url.replace(/^https?:\/\//, '').split('/')[0]}
             </span>
           </div>
@@ -81,21 +78,24 @@ export default function ToolCard({
         <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => onToggleStar(tool.id)}
-            className={`w-9 h-9 flex items-center justify-center rounded-full border transition-all text-sm ${
+            aria-label={isStarred ? `Unsave ${tool.name}` : `Save ${tool.name}`}
+            className={`w-9 h-9 flex items-center justify-center rounded-full border transition-all ${
               isStarred
-                ? 'bg-orange-50 border-orange-300 text-orange-500 shadow-sm'
-                : 'bg-zinc-50 border-zinc-200 text-zinc-400 hover:border-orange-300 hover:text-orange-500'
+                ? 'bg-[#9fa1ff]/20 border-[#9fa1ff]/40 text-[#4338ca]'
+                : 'bg-slate-50 border-slate-200 text-slate-400 hover:border-[#9fa1ff] hover:text-[#6366f1]'
             }`}
           >
-            {isStarred ? '★' : '☆'}
+            <svg className="w-4 h-4" fill={isStarred ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+            </svg>
           </button>
           <a
             href={tool.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs px-4 py-2 rounded-full shadow-md shadow-orange-500/20 transition-all hover:scale-105"
+            className="bg-[#6366f1] hover:bg-[#4f46e5] text-white font-bold text-xs px-4 py-2 rounded-full shadow-md shadow-[#9fa1ff]/20 transition-all hover:scale-105"
           >
-            Visit ↗
+            Visit Site
           </a>
         </div>
       </div>
@@ -104,16 +104,13 @@ export default function ToolCard({
 
   /* ── GRID CARD ── */
   return (
-    <div className="group flex flex-col bg-white rounded-3xl border border-zinc-200/80 p-5 hover:border-orange-300 hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all relative overflow-hidden">
+    <div className="group flex flex-col bg-white rounded-3xl border border-slate-200/80 p-5 hover:border-[#9fa1ff] hover:shadow-xl hover:shadow-[#9fa1ff]/15 hover:-translate-y-1 transition-all relative overflow-hidden">
       {/* Accent top gradient line */}
-      <div
-        className="absolute top-0 left-0 right-0 h-1.5 opacity-80 group-hover:opacity-100 transition-opacity"
-        style={{ backgroundColor: cat.color }}
-      />
+      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#9fa1ff] via-[#7c7fff] to-[#6366f1] opacity-70 group-hover:opacity-100 transition-opacity" />
 
-      {/* Header: Logo + Category Pill */}
+      {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-4 pt-1">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-50 border border-zinc-100 p-2.5 shadow-sm group-hover:scale-105 group-hover:shadow-md transition-all">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 border border-slate-200/60 p-2.5 shadow-2xs group-hover:scale-105 group-hover:shadow-md transition-all">
           <ToolLogo
             url={tool.url}
             name={tool.name}
@@ -125,20 +122,19 @@ export default function ToolCard({
         </div>
 
         <div className="flex flex-col items-end gap-1.5">
-          <span className="rounded-full bg-zinc-100 border border-zinc-200/80 text-zinc-700 text-[10px] font-bold px-2.5 py-1 flex items-center gap-1 shadow-2xs">
-            <span>{cat.emoji}</span>
-            <span>{cat.label}</span>
+          <span className="rounded-full bg-slate-100/90 border border-slate-200/80 text-slate-700 text-[10px] font-bold px-2.5 py-1">
+            {cat.label}
           </span>
 
           <div className="flex items-center gap-1">
             {tool.isFeatured && (
-              <span className="rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[9px] font-bold px-2 py-0.5">
-                ★ POPULAR
+              <span className="rounded-full bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30 text-[9px] font-bold px-2 py-0.5">
+                FEATURED
               </span>
             )}
             {tool.isNew && (
-              <span className="rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 text-[9px] font-bold px-2 py-0.5">
-                ✦ NEW
+              <span className="rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[9px] font-bold px-2 py-0.5">
+                NEW
               </span>
             )}
           </div>
@@ -147,10 +143,10 @@ export default function ToolCard({
 
       {/* Content */}
       <div className="flex flex-col flex-1">
-        <h3 className="text-base font-bold text-zinc-900 mb-1 leading-tight group-hover:text-orange-600 transition-colors">
+        <h3 className="text-base font-bold text-slate-900 mb-1 leading-tight group-hover:text-[#6366f1] transition-colors">
           {tool.name}
         </h3>
-        <p className="text-xs font-medium text-zinc-500 leading-relaxed mb-4 line-clamp-2 flex-1">
+        <p className="text-xs font-medium text-slate-500 leading-relaxed mb-4 line-clamp-2 flex-1">
           {tool.description}
         </p>
 
@@ -162,8 +158,8 @@ export default function ToolCard({
         </div>
 
         {/* Domain */}
-        <p className="text-[11px] font-mono text-zinc-400 mb-4 truncate flex items-center gap-1.5">
-          <svg className="w-3.5 h-3.5 text-zinc-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <p className="text-[11px] font-mono text-slate-400 mb-4 truncate flex items-center gap-1.5">
+          <svg className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
           </svg>
           <span className="truncate">{tool.url.replace(/^https?:\/\//, '').split('/')[0]}</span>
@@ -171,27 +167,31 @@ export default function ToolCard({
       </div>
 
       {/* Footer */}
-      <div className="pt-3 border-t border-zinc-100 flex items-center gap-2">
+      <div className="pt-3 border-t border-slate-100 flex items-center gap-2">
         <button
           onClick={() => onToggleStar(tool.id)}
           aria-label={isStarred ? `Unsave ${tool.name}` : `Save ${tool.name}`}
-          className={`w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl border text-sm transition-all ${
+          className={`w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl border transition-all ${
             isStarred
-              ? 'bg-orange-50 border-orange-300 text-orange-500 shadow-sm'
-              : 'bg-zinc-50 border-zinc-200 text-zinc-400 hover:border-orange-300 hover:text-orange-500'
+              ? 'bg-[#9fa1ff]/20 border-[#9fa1ff]/40 text-[#4338ca]'
+              : 'bg-slate-50 border-slate-200/80 text-slate-400 hover:border-[#9fa1ff] hover:text-[#6366f1]'
           }`}
         >
-          {isStarred ? '★' : '☆'}
+          <svg className="w-4 h-4" fill={isStarred ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+          </svg>
         </button>
 
         <a
           href={tool.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs py-2.5 rounded-xl shadow-md shadow-orange-500/20 transition-all hover:scale-[1.02]"
+          className="flex-1 flex items-center justify-center gap-2 bg-[#6366f1] hover:bg-[#4f46e5] text-white font-bold text-xs py-2.5 rounded-xl shadow-md shadow-[#9fa1ff]/20 transition-all hover:scale-[1.02]"
         >
           <span>Visit Site</span>
-          <span className="text-xs">↗</span>
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
         </a>
       </div>
     </div>

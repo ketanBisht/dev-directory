@@ -29,45 +29,45 @@ export default function CategorySidebar({
 }: CategorySidebarProps) {
   return (
     <aside className="w-full lg:w-56 xl:w-60 flex-shrink-0">
-      {/* Mobile: horizontal pill row */}
+      {/* Mobile: horizontal scroll row */}
       <div className="flex gap-2 overflow-x-auto pb-3 no-scrollbar lg:hidden">
         <MobilePill
           active={!activeCategory && !showStarredOnly}
           onClick={() => { if (showStarredOnly) onToggleStarredOnly(); onSelectCategory(null); }}
-          label="All" count={totalTools}
+          label="All Resources" count={totalTools}
         />
-        <MobilePill active={showStarredOnly} onClick={onToggleStarredOnly} label="★ Saved" count={starredCount} />
+        <MobilePill active={showStarredOnly} onClick={onToggleStarredOnly} label="Saved" count={starredCount} />
         {categories.map((cat) => (
           <MobilePill
             key={cat.id}
             active={activeCategory === cat.id && !showStarredOnly}
             onClick={() => { if (showStarredOnly) onToggleStarredOnly(); onSelectCategory(cat.id); }}
-            label={`${cat.emoji} ${cat.label}`}
+            label={cat.label}
             count={categoryCounts[cat.id] ?? 0}
           />
         ))}
       </div>
 
-      {/* Desktop: sticky column panel */}
-      <div className="hidden lg:flex flex-col gap-5 sticky top-6">
+      {/* Desktop: sticky sidebar panel */}
+      <div className="hidden lg:flex flex-col gap-5 sticky top-20">
         
         {/* Quick access */}
-        <div className="bg-zinc-50 rounded-2xl border border-zinc-100 overflow-hidden">
+        <div className="bg-slate-50/80 rounded-2xl border border-slate-200/80 overflow-hidden">
           <SidebarBtn
             active={!activeCategory && !showStarredOnly}
             onClick={() => { if (showStarredOnly) onToggleStarredOnly(); onSelectCategory(null); onSelectTag(null); }}
-            icon="⚡" label="All Tools" count={totalTools}
+            label="All Resources" count={totalTools}
           />
           <SidebarBtn
             active={showStarredOnly} onClick={onToggleStarredOnly}
-            icon="★" label="Saved" count={starredCount} divider
+            label="Saved Resources" count={starredCount} divider
           />
         </div>
 
         {/* Categories */}
-        <div className="bg-zinc-50 rounded-2xl border border-zinc-100 overflow-hidden">
-          <div className="px-4 py-2.5 border-b border-zinc-200 bg-white">
-            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Categories</span>
+        <div className="bg-slate-50/80 rounded-2xl border border-slate-200/80 overflow-hidden">
+          <div className="px-4 py-2.5 border-b border-slate-200/80 bg-white">
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Categories</span>
           </div>
           <div className="max-h-72 overflow-y-auto no-scrollbar">
             {categories.map((cat, i) => (
@@ -75,7 +75,6 @@ export default function CategorySidebar({
                 key={cat.id}
                 active={activeCategory === cat.id && !showStarredOnly}
                 onClick={() => { if (showStarredOnly) onToggleStarredOnly(); onSelectCategory(cat.id); }}
-                icon={cat.emoji}
                 label={cat.label}
                 count={categoryCounts[cat.id] ?? 0}
                 divider={i > 0}
@@ -84,10 +83,10 @@ export default function CategorySidebar({
           </div>
         </div>
 
-        {/* Tags */}
-        <div className="bg-zinc-50 rounded-2xl border border-zinc-100 overflow-hidden">
-          <div className="px-4 py-2.5 border-b border-zinc-200 bg-white">
-            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Quick Tags</span>
+        {/* Quick Tags */}
+        <div className="bg-slate-50/80 rounded-2xl border border-slate-200/80 overflow-hidden">
+          <div className="px-4 py-2.5 border-b border-slate-200/80 bg-white">
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Quick Tags</span>
           </div>
           <div className="p-3 flex flex-wrap gap-1.5">
             {quickTags.map((tag) => {
@@ -98,8 +97,8 @@ export default function CategorySidebar({
                   onClick={() => onSelectTag(active ? null : tag)}
                   className={`rounded-full px-3 py-1 text-[11px] font-semibold border transition-all ${
                     active
-                      ? 'bg-orange-500 text-white border-orange-500 shadow-md shadow-orange-500/25'
-                      : 'bg-white text-zinc-600 border-zinc-200 hover:border-orange-300 hover:text-orange-600'
+                      ? 'bg-[#6366f1] text-white border-[#6366f1] shadow-md shadow-[#9fa1ff]/30'
+                      : 'bg-white text-slate-600 border-slate-200 hover:border-[#9fa1ff]/50 hover:text-[#4338ca]'
                   }`}
                 >
                   #{tag}
@@ -115,22 +114,19 @@ export default function CategorySidebar({
 
 /* ─── Subcomponents ─── */
 
-function SidebarBtn({ active, onClick, icon, label, count, divider = false }: {
-  active: boolean; onClick: () => void; icon: string; label: string; count: number; divider?: boolean;
+function SidebarBtn({ active, onClick, label, count, divider = false }: {
+  active: boolean; onClick: () => void; label: string; count: number; divider?: boolean;
 }) {
   return (
     <button
       onClick={onClick}
       className={`flex w-full items-center justify-between px-4 py-2.5 text-xs font-semibold transition-all text-left gap-2 ${
-        divider ? 'border-t border-zinc-200' : ''
-      } ${active ? 'bg-orange-50 text-orange-600' : 'text-zinc-700 hover:bg-white'}`}
+        divider ? 'border-t border-slate-200/80' : ''
+      } ${active ? 'bg-[#9fa1ff]/20 text-[#3730a3] font-bold' : 'text-slate-700 hover:bg-white'}`}
     >
-      <span className="flex items-center gap-2.5 truncate">
-        <span className="text-sm">{icon}</span>
-        <span className="truncate">{label}</span>
-      </span>
+      <span className="truncate">{label}</span>
       <span className={`text-[10px] font-mono font-bold flex-shrink-0 rounded-full px-2 py-0.5 ${
-        active ? 'bg-orange-500 text-white' : 'bg-zinc-200 text-zinc-500'
+        active ? 'bg-[#6366f1] text-white' : 'bg-slate-200/80 text-slate-500'
       }`}>
         {count}
       </span>
@@ -146,12 +142,12 @@ function MobilePill({ active, onClick, label, count }: {
       onClick={onClick}
       className={`flex flex-shrink-0 items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold border transition-all ${
         active
-          ? 'bg-orange-500 text-white border-orange-500 shadow-md shadow-orange-500/25'
-          : 'bg-white text-zinc-700 border-zinc-200 hover:border-orange-300'
+          ? 'bg-[#6366f1] text-white border-[#6366f1] shadow-md shadow-[#9fa1ff]/30'
+          : 'bg-white text-slate-700 border-slate-200 hover:border-[#9fa1ff]/50'
       }`}
     >
       {label}
-      <span className={`text-[10px] font-bold rounded-full px-1.5 ${active ? 'bg-white/25 text-white' : 'bg-zinc-100 text-zinc-500'}`}>
+      <span className={`text-[10px] font-bold rounded-full px-1.5 ${active ? 'bg-white/25 text-white' : 'bg-slate-100 text-slate-500'}`}>
         {count}
       </span>
     </button>

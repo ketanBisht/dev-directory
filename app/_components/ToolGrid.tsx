@@ -33,18 +33,18 @@ export default function ToolGrid({
     <div>
       {/* Control bar */}
       <div className="flex items-center justify-between gap-3 mb-6">
-        <p className="text-sm font-semibold text-zinc-500">
-          <span className="text-zinc-900 text-lg font-black">{sorted.length}</span> tools found
+        <p className="text-sm font-semibold text-slate-500">
+          <span className="text-slate-900 text-lg font-black">{sorted.length}</span> resources found
         </p>
 
         <div className="flex items-center gap-2">
           {/* Sort dropdown */}
-          <div className="flex items-center gap-1.5 bg-zinc-100 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-600">
-            Sort:
+          <div className="flex items-center gap-1.5 bg-slate-100 rounded-xl px-3 py-2 text-xs font-semibold text-slate-600 border border-slate-200/80">
+            <span>Sort:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortKey)}
-              className="bg-transparent text-zinc-900 font-bold focus:outline-none cursor-pointer"
+              className="bg-transparent text-slate-900 font-bold focus:outline-none cursor-pointer"
             >
               <option value="featured">Popular</option>
               <option value="name">A → Z</option>
@@ -52,12 +52,12 @@ export default function ToolGrid({
             </select>
           </div>
 
-          {/* View toggle — like the arrows in the reference card strip */}
-          <div className="flex bg-zinc-100 rounded-xl overflow-hidden">
+          {/* View toggle */}
+          <div className="flex bg-slate-100 rounded-xl overflow-hidden border border-slate-200/80">
             <button
               onClick={() => setViewMode('grid')}
               title="Grid view"
-              className={`px-3 py-2 transition-colors ${viewMode === 'grid' ? 'bg-orange-500 text-white' : 'text-zinc-500 hover:text-zinc-900'}`}
+              className={`px-3 py-2 transition-colors ${viewMode === 'grid' ? 'bg-[#6366f1] text-white' : 'text-slate-500 hover:text-slate-900'}`}
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
                 <rect x="1" y="1" width="6" height="6" rx="1.5"/>
@@ -69,7 +69,7 @@ export default function ToolGrid({
             <button
               onClick={() => setViewMode('list')}
               title="List view"
-              className={`px-3 py-2 transition-colors ${viewMode === 'list' ? 'bg-orange-500 text-white' : 'text-zinc-500 hover:text-zinc-900'}`}
+              className={`px-3 py-2 transition-colors ${viewMode === 'list' ? 'bg-[#6366f1] text-white' : 'text-slate-500 hover:text-slate-900'}`}
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
                 <rect x="1" y="2" width="14" height="2.5" rx="1.25"/>
@@ -83,15 +83,19 @@ export default function ToolGrid({
 
       {/* Empty state */}
       {sorted.length === 0 ? (
-        <div className="py-24 text-center">
-          <p className="text-5xl mb-4">🔍</p>
-          <p className="text-lg font-black text-zinc-900 mb-1">No tools found</p>
-          <p className="text-sm text-zinc-500 font-medium mb-6 max-w-xs mx-auto">
-            Try a different keyword or remove your active filters.
+        <div className="py-20 text-center bg-white rounded-3xl border border-slate-200/80 p-8 shadow-2xs">
+          <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400 mb-4">
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <p className="text-base font-bold text-slate-900 mb-1">No matching resources found</p>
+          <p className="text-xs text-slate-500 font-medium mb-6 max-w-xs mx-auto">
+            Try a different search query or clear your active category filters.
           </p>
           <button
             onClick={onResetFilters}
-            className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm px-6 py-3 rounded-full shadow-md shadow-orange-500/30 transition-all"
+            className="bg-[#6366f1] hover:bg-[#4f46e5] text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-md shadow-[#9fa1ff]/25 transition-all"
           >
             Reset Filters
           </button>

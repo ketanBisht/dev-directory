@@ -12,8 +12,8 @@ export default function TagBadge({ tag, active = false, onClick }: TagBadgeProps
       aria-pressed={active}
       className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold transition-all cursor-pointer select-none border ${
         active
-          ? 'bg-orange-500 text-white border-orange-500 shadow-md shadow-orange-500/25'
-          : 'bg-zinc-100 text-zinc-600 border-zinc-200 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200'
+          ? 'bg-[#6366f1] text-white border-[#6366f1] shadow-md shadow-[#9fa1ff]/30'
+          : 'bg-slate-100/80 text-slate-600 border-slate-200/80 hover:bg-[#9fa1ff]/15 hover:text-[#4338ca] hover:border-[#9fa1ff]/40'
       }`}
     >
       #{tag}

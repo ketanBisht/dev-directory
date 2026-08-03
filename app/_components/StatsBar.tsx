@@ -20,26 +20,26 @@ export default function StatsBar({
   return (
     <div className="flex flex-wrap items-center gap-2 mb-5 text-xs font-semibold">
       {hasFilters && (
-        <span className="text-zinc-400">
-          {filtered} of {total} tools
+        <span className="text-slate-400 mr-1">
+          Showing {filtered} of {total} resources
         </span>
       )}
       {activeCategory && (
         <button
           onClick={onClearCategory}
-          className="flex items-center gap-1.5 bg-orange-50 text-orange-600 border border-orange-200 rounded-full px-3 py-1.5 font-semibold hover:bg-orange-100 transition-colors"
+          className="flex items-center gap-1.5 bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30 rounded-full px-3 py-1 font-semibold hover:bg-[#9fa1ff]/25 transition-colors"
         >
-          <span>{activeCategory.emoji} {activeCategory.label}</span>
-          <span className="text-orange-400">✕</span>
+          <span>{activeCategory.label}</span>
+          <span className="text-[#6366f1]">✕</span>
         </button>
       )}
       {activeTag && (
         <button
           onClick={onClearTag}
-          className="flex items-center gap-1.5 bg-zinc-900 text-white rounded-full px-3 py-1.5 font-semibold hover:bg-zinc-700 transition-colors"
+          className="flex items-center gap-1.5 bg-slate-900 text-white rounded-full px-3 py-1 font-semibold hover:bg-slate-800 transition-colors"
         >
           <span>#{activeTag}</span>
-          <span className="text-zinc-400">✕</span>
+          <span className="text-slate-400">✕</span>
         </button>
       )}
     </div>
