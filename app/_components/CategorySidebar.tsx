@@ -44,6 +44,7 @@ export default function CategorySidebar({
             onClick={() => { if (showStarredOnly) onToggleStarredOnly(); onSelectCategory(cat.id); }}
             label={cat.label}
             count={categoryCounts[cat.id] ?? 0}
+            color={cat.color}
           />
         ))}
       </div>
@@ -78,6 +79,7 @@ export default function CategorySidebar({
                 label={cat.label}
                 count={categoryCounts[cat.id] ?? 0}
                 divider={i > 0}
+                color={cat.color}
               />
             ))}
           </div>
@@ -114,8 +116,8 @@ export default function CategorySidebar({
 
 /* ─── Subcomponents ─── */
 
-function SidebarBtn({ active, onClick, label, count, divider = false }: {
-  active: boolean; onClick: () => void; label: string; count: number; divider?: boolean;
+function SidebarBtn({ active, onClick, label, count, divider = false, color }: {
+  active: boolean; onClick: () => void; label: string; count: number; divider?: boolean; color?: string;
 }) {
   return (
     <button
@@ -124,7 +126,15 @@ function SidebarBtn({ active, onClick, label, count, divider = false }: {
         divider ? 'border-t border-slate-200/80' : ''
       } ${active ? 'bg-[#9fa1ff]/20 text-[#3730a3] font-bold' : 'text-slate-700 hover:bg-white'}`}
     >
-      <span className="truncate">{label}</span>
+      <span className="flex items-center gap-2 truncate">
+        {color && (
+          <span
+            className="w-2 h-2 rounded-full flex-shrink-0 opacity-90"
+            style={{ backgroundColor: color }}
+          />
+        )}
+        <span className="truncate">{label}</span>
+      </span>
       <span className={`text-[10px] font-mono font-bold flex-shrink-0 rounded-full px-2 py-0.5 ${
         active ? 'bg-[#6366f1] text-white' : 'bg-slate-200/80 text-slate-500'
       }`}>
@@ -134,18 +144,24 @@ function SidebarBtn({ active, onClick, label, count, divider = false }: {
   );
 }
 
-function MobilePill({ active, onClick, label, count }: {
-  active: boolean; onClick: () => void; label: string; count: number;
+function MobilePill({ active, onClick, label, count, color }: {
+  active: boolean; onClick: () => void; label: string; count: number; color?: string;
 }) {
   return (
     <button
       onClick={onClick}
-      className={`flex flex-shrink-0 items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold border transition-all ${
+      className={`flex flex-shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold border transition-all ${
         active
           ? 'bg-[#6366f1] text-white border-[#6366f1] shadow-md shadow-[#9fa1ff]/30'
           : 'bg-white text-slate-700 border-slate-200 hover:border-[#9fa1ff]/50'
       }`}
     >
+      {color && (
+        <span
+          className="w-2 h-2 rounded-full flex-shrink-0"
+          style={{ backgroundColor: active ? '#fff' : color, opacity: active ? 0.7 : 1 }}
+        />
+      )}
       {label}
       <span className={`text-[10px] font-bold rounded-full px-1.5 ${active ? 'bg-white/25 text-white' : 'bg-slate-100 text-slate-500'}`}>
         {count}

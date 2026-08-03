@@ -27,9 +27,15 @@ export default function ToolCard({
   /* ── LIST ROW ── */
   if (viewMode === 'list') {
     return (
-      <div className="group flex items-center gap-4 bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-[#9fa1ff] hover:shadow-lg hover:shadow-[#9fa1ff]/10 hover:-translate-y-0.5 transition-all">
+      <div className="group flex items-center gap-4 bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/40 hover:-translate-y-0.5 transition-all relative overflow-hidden">
+        {/* Category Accent Left Line */}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-1.5 opacity-90 group-hover:opacity-100 transition-opacity"
+          style={{ backgroundColor: cat.color }}
+        />
+
         {/* Logo Container */}
-        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-slate-50 border border-slate-200/60 p-2 shadow-2xs group-hover:scale-105 transition-transform">
+        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-slate-50 border border-slate-200/60 p-2 shadow-2xs group-hover:scale-105 transition-transform ml-1">
           <ToolLogo
             url={tool.url}
             name={tool.name}
@@ -47,19 +53,21 @@ export default function ToolCard({
               {tool.name}
             </span>
             {tool.isNew && (
-              <span className="rounded-full bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30 text-[9px] font-bold px-2 py-0.5 flex-shrink-0">
+              <span className="rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[9px] font-bold px-2 py-0.5 flex-shrink-0">
                 NEW
               </span>
             )}
             {tool.isFeatured && (
-              <span className="rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[9px] font-bold px-2 py-0.5 flex-shrink-0">
+              <span className="rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 text-[9px] font-bold px-2 py-0.5 flex-shrink-0">
                 FEATURED
               </span>
             )}
           </div>
           <p className="text-xs text-slate-500 font-medium truncate mb-1">{tool.description}</p>
           <div className="flex items-center gap-3 text-[11px]">
-            <span className="text-slate-500 font-semibold">{cat.label}</span>
+            <span className={`font-semibold rounded-full px-2 py-0.5 border ${cat.bgColor} ${cat.textColor}`}>
+              {cat.label}
+            </span>
             <span className="text-slate-300">·</span>
             <span className="font-mono text-slate-400 truncate">
               {tool.url.replace(/^https?:\/\//, '').split('/')[0]}
@@ -104,9 +112,12 @@ export default function ToolCard({
 
   /* ── GRID CARD ── */
   return (
-    <div className="group flex flex-col bg-white rounded-3xl border border-slate-200/80 p-5 hover:border-[#9fa1ff] hover:shadow-xl hover:shadow-[#9fa1ff]/15 hover:-translate-y-1 transition-all relative overflow-hidden">
-      {/* Accent top gradient line */}
-      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#9fa1ff] via-[#7c7fff] to-[#6366f1] opacity-70 group-hover:opacity-100 transition-opacity" />
+    <div className="group flex flex-col bg-white rounded-3xl border border-slate-200/80 p-5 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1 transition-all relative overflow-hidden">
+      {/* Category-Specific Distinct Color Top Band */}
+      <div
+        className="absolute top-0 left-0 right-0 h-1.5 opacity-90 group-hover:opacity-100 transition-opacity"
+        style={{ backgroundColor: cat.color }}
+      />
 
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-4 pt-1">
@@ -122,13 +133,14 @@ export default function ToolCard({
         </div>
 
         <div className="flex flex-col items-end gap-1.5">
-          <span className="rounded-full bg-slate-100/90 border border-slate-200/80 text-slate-700 text-[10px] font-bold px-2.5 py-1">
+          {/* Category Pill with category-specific colors */}
+          <span className={`rounded-full border text-[10px] font-bold px-2.5 py-1 ${cat.bgColor} ${cat.textColor}`}>
             {cat.label}
           </span>
 
           <div className="flex items-center gap-1">
             {tool.isFeatured && (
-              <span className="rounded-full bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30 text-[9px] font-bold px-2 py-0.5">
+              <span className="rounded-full bg-slate-100 text-slate-700 border border-slate-200 text-[9px] font-bold px-2 py-0.5">
                 FEATURED
               </span>
             )}

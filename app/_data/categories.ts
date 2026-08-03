@@ -13,92 +13,81 @@ export type CategoryId =
 export interface Category {
   id: CategoryId;
   label: string;
-  color: string;         // Hex — used for accents and badges
-  sidebarActive: string; // Tailwind class string for active state
-  badge: string;         // Tailwind class for tag badges
-  dot: string;           // Dot color class
+  color: string;         // Distinct Hex — used for card top band, badge border & glow
+  bgColor: string;       // Soft background tint for category badge
+  textColor: string;     // Text color for category badge
 }
 
 export const categories: Category[] = [
   {
     id: 'deployment',
     label: 'Deployment',
-    color: '#6366f1',
-    sidebarActive: 'bg-[#9fa1ff]/15 text-[#4338ca] border-[#9fa1ff]/40',
-    badge: 'bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30',
-    dot: 'bg-[#6366f1]',
+    color: '#6366f1', // Indigo
+    bgColor: 'bg-indigo-50 border-indigo-200',
+    textColor: 'text-indigo-700',
   },
   {
     id: 'ui-libraries',
     label: 'UI Libraries',
-    color: '#7c7fff',
-    sidebarActive: 'bg-[#9fa1ff]/15 text-[#4338ca] border-[#9fa1ff]/40',
-    badge: 'bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30',
-    dot: 'bg-[#7c7fff]',
+    color: '#8b5cf6', // Violet
+    bgColor: 'bg-violet-50 border-violet-200',
+    textColor: 'text-violet-700',
   },
   {
     id: 'ai-tools',
     label: 'AI Tools',
-    color: '#4f46e5',
-    sidebarActive: 'bg-[#9fa1ff]/15 text-[#4338ca] border-[#9fa1ff]/40',
-    badge: 'bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30',
-    dot: 'bg-[#4f46e5]',
+    color: '#0284c7', // Sky / Cyan
+    bgColor: 'bg-sky-50 border-sky-200',
+    textColor: 'text-sky-700',
   },
   {
     id: 'documentation',
     label: 'Documentation',
-    color: '#6366f1',
-    sidebarActive: 'bg-[#9fa1ff]/15 text-[#4338ca] border-[#9fa1ff]/40',
-    badge: 'bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30',
-    dot: 'bg-[#6366f1]',
+    color: '#2563eb', // Blue
+    bgColor: 'bg-blue-50 border-blue-200',
+    textColor: 'text-blue-700',
   },
   {
     id: 'apis-services',
     label: 'APIs & Services',
-    color: '#4338ca',
-    sidebarActive: 'bg-[#9fa1ff]/15 text-[#4338ca] border-[#9fa1ff]/40',
-    badge: 'bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30',
-    dot: 'bg-[#4338ca]',
+    color: '#059669', // Emerald
+    bgColor: 'bg-emerald-50 border-emerald-200',
+    textColor: 'text-emerald-700',
   },
   {
     id: 'playgrounds',
     label: 'Playgrounds',
-    color: '#7c7fff',
-    sidebarActive: 'bg-[#9fa1ff]/15 text-[#4338ca] border-[#9fa1ff]/40',
-    badge: 'bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30',
-    dot: 'bg-[#7c7fff]',
+    color: '#d97706', // Amber
+    bgColor: 'bg-amber-50 border-amber-200',
+    textColor: 'text-amber-700',
   },
   {
     id: 'design',
     label: 'Design',
-    color: '#818cf8',
-    sidebarActive: 'bg-[#9fa1ff]/15 text-[#4338ca] border-[#9fa1ff]/40',
-    badge: 'bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30',
-    dot: 'bg-[#818cf8]',
+    color: '#db2777', // Pink
+    bgColor: 'bg-pink-50 border-pink-200',
+    textColor: 'text-pink-700',
   },
   {
     id: 'debugging',
     label: 'Debugging',
-    color: '#4f46e5',
-    sidebarActive: 'bg-[#9fa1ff]/15 text-[#4338ca] border-[#9fa1ff]/40',
-    badge: 'bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30',
-    dot: 'bg-[#4f46e5]',
+    color: '#e11d48', // Rose
+    bgColor: 'bg-rose-50 border-rose-200',
+    textColor: 'text-rose-700',
   },
   {
     id: 'packages',
     label: 'Packages',
-    color: '#6366f1',
-    sidebarActive: 'bg-[#9fa1ff]/15 text-[#4338ca] border-[#9fa1ff]/40',
-    badge: 'bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30',
-    dot: 'bg-[#6366f1]',
+    color: '#9333ea', // Purple
+    bgColor: 'bg-purple-50 border-purple-200',
+    textColor: 'text-purple-700',
   },
   {
     id: 'hosting',
     label: 'Hosting',
-    color: '#7c7fff',
-    sidebarActive: 'bg-[#9fa1ff]/15 text-[#4338ca] border-[#9fa1ff]/40',
-    badge: 'bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30',
-    dot: 'bg-[#7c7fff]',
+    color: '#0d9488', // Teal
+    bgColor: 'bg-teal-50 border-teal-200',
+    textColor: 'text-teal-700',
   },
 ];
 

@@ -221,8 +221,13 @@ export default function Home() {
                 return (
                   <div
                     key={tool.id}
-                    className="flex-shrink-0 w-72 bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-[#9fa1ff] hover:shadow-xl hover:shadow-[#9fa1ff]/10 hover:-translate-y-1 transition-all group flex flex-col justify-between"
+                    className="relative flex-shrink-0 w-72 bg-white rounded-2xl border border-slate-200/80 p-4 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1 transition-all group flex flex-col justify-between overflow-hidden"
                   >
+                    {/* Category color top strip */}
+                    <div
+                      className="absolute top-0 left-0 right-0 h-1 opacity-90"
+                      style={{ backgroundColor: cat.color }}
+                    />
                     <div>
                       <div className="flex items-center justify-between gap-3 mb-3">
                         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-50 border border-slate-200/60 p-2 shadow-2xs group-hover:scale-105 transition-transform">
@@ -235,7 +240,9 @@ export default function Home() {
                             className="rounded-md"
                           />
                         </div>
-                        <span className="rounded-full bg-[#9fa1ff]/15 text-[#4338ca] border border-[#9fa1ff]/30 text-[10px] font-bold px-2.5 py-0.5">
+                        <span
+                          className={`rounded-full border text-[10px] font-bold px-2.5 py-0.5 ${cat.bgColor} ${cat.textColor}`}
+                        >
                           {cat.label}
                         </span>
                       </div>
