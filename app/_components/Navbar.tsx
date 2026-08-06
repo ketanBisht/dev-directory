@@ -18,9 +18,14 @@ export default function Navbar({
   return (
     <nav className="flex items-center justify-between py-4 px-4 sm:px-8 lg:px-14 border-b border-zinc-200/60 bg-white/90 backdrop-blur-md sticky top-0 z-40">
       {/* Brand Logo */}
-      <button onClick={onReset} className="flex items-center gap-1 group">
-        <span className="text-2xl font-black text-[#6366f1] tracking-tight group-hover:text-[#4f46e5] transition-colors">dev</span>
-        <span className="text-2xl font-black text-slate-900 tracking-tight">directory</span>
+      <button onClick={onReset} className="flex items-center gap-2.5 group">
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md shadow-indigo-500/10 group-hover:scale-105 transition-transform">
+          <img src="/logo.svg" alt="Dev Directory Logo" className="w-full h-full rounded-xl object-cover" />
+        </div>
+        <div className="flex items-center gap-0.5">
+          <span className="text-2xl font-black text-[#6366f1] tracking-tight group-hover:text-[#4f46e5] transition-colors">dev</span>
+          <span className="text-2xl font-black text-slate-900 tracking-tight">directory</span>
+        </div>
       </button>
 
       {/* Center Nav */}

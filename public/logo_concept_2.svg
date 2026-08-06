@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="c2-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="100%" stop-color="#04060a"/>
+    </linearGradient>
+
+    <linearGradient id="c2-layer1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+
+    <linearGradient id="c2-layer2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+
+    <linearGradient id="c2-layer3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+
+    <radialGradient id="c2-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    
+    <filter id="c2-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="120" fill="url(#c2-bg)"/>
+  <circle cx="256" cy="256" r="220" fill="url(#c2-glow)"/>
+
+  <!-- Layer 3 (Bottom Layer) -->
+  <path d="M256 370 L120 300 L256 230 L392 300 Z" fill="url(#c2-layer3)" filter="url(#c2-shadow)" opacity="0.6"/>
+
+  <!-- Layer 2 (Middle Layer) -->
+  <path d="M256 310 L120 240 L256 170 L392 240 Z" fill="url(#c2-layer2)" filter="url(#c2-shadow)" opacity="0.85"/>
+
+  <!-- Layer 1 (Top Layer - Primary Directory Card) -->
+  <path d="M256 250 L120 180 L256 110 L392 180 Z" fill="url(#c2-layer1)" filter="url(#c2-shadow)"/>
+
+  <!-- Terminal Path Marker on Top Layer: "> _" -->
+  <path d="M220 170 L240 180 L220 190" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="252" y1="190" x2="276" y2="190" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+</svg>

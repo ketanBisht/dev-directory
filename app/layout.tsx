@@ -15,7 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "dev directory — Curated Developer Tools & Resources",
+  metadataBase: new URL("https://devdirectory.app"),
+  title: "the dev directory",
   description:
     "The developer resource index. Search and discover frameworks, libraries, APIs, AI tools, deployment platforms, and everything you need to build software.",
   keywords: [
@@ -28,6 +29,25 @@ export const metadata: Metadata = {
     "deployment",
     "web development",
   ],
+  icons: {
+    icon: [
+      { url: "/logo.svg", type: "image/svg+xml" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
+  openGraph: {
+    title: "the dev directory",
+    description: "The developer resource index. Discover frameworks, libraries, APIs, AI tools, and more.",
+    images: ["/logo.svg"],
+  },
+  twitter: {
+    card: "summary",
+    title: "the dev directory",
+    description: "The developer resource index. Discover frameworks, libraries, APIs, AI tools, and more.",
+    images: ["/logo.svg"],
+  },
 };
 
 export default function RootLayout({

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <!-- Background & Glow Gradients -->
+    <linearGradient id="c1-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19"/>
+      <stop offset="50%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#070a12"/>
+    </linearGradient>
+
+    <linearGradient id="c1-primary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+
+    <linearGradient id="c1-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+
+    <linearGradient id="c1-glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+
+    <filter id="c1-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <radialGradient id="c1-backglow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.4"/>
+      <stop offset="60%" stop-color="#8b5cf6" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Container Base -->
+  <rect width="512" height="512" rx="120" fill="url(#c1-bg)"/>
+  <rect width="508" height="508" x="2" y="2" rx="118" stroke="url(#c1-glass)" stroke-width="4"/>
+  <circle cx="256" cy="256" r="200" fill="url(#c1-backglow)"/>
+
+  <!-- Directory Folder + Monogram "D" Structure -->
+  <!-- Outer D / Folder outline -->
+  <path d="M140 140 
+           H250 
+           C320 140 372 192 372 256 
+           C372 320 320 372 250 372 
+           H140 
+           Z" 
+        fill="url(#c1-primary)" 
+        filter="url(#c1-glow)"/>
+
+  <!-- Inner Cutout creating the sharp "D" directory node -->
+  <path d="M200 196 
+           H246 
+           C280 196 312 222 312 256 
+           C312 290 280 316 246 316 
+           H200 
+           Z" 
+        fill="#0b0f19"/>
+
+  <!-- Directory Tab Accent (Top Folder Flap) -->
+  <path d="M140 140 H220 L248 176 H140 Z" fill="url(#c1-accent)"/>
+
+  <!-- Glowing Central Node / Search Index Spark -->
+  <circle cx="256" cy="256" r="24" fill="url(#c1-accent)" filter="url(#c1-glow)"/>
+  <circle cx="256" cy="256" r="10" fill="#ffffff"/>
+
+  <!-- Grid Index Lines inside "D" representing discovery index -->
+  <line x1="200" y1="230" x2="280" y2="230" stroke="url(#c1-accent)" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+  <line x1="200" y1="282" x2="265" y2="282" stroke="url(#c1-accent)" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+</svg>
